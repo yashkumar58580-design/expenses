@@ -1,15 +1,16 @@
-# Python ka image use karein
 FROM python:3.9
 
-# Folder set karein
 WORKDIR /app
 
-# Sabse pehle requirements copy aur install karein
+# Pehle requirements install karte hain
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Baaki saara code copy karein
+# Phir baaki saara code copy karte hain
 COPY . .
 
-# FastAPI ko run karne ki command
+# Port expose karna zaroori hai
+EXPOSE 8000
+
+# Server start karne ki command
 CMD ["uvicorn", "Adv_api_inr:app", "--host", "0.0.0.0", "--port", "8000"]
