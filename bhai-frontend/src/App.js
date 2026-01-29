@@ -34,8 +34,9 @@ function App() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await // Dhyan se dekhna, ye ` (backticks) hain, ' (single quotes) nahi.
-const response = await fetch(${process.env.REACT_APP_API_URL}/transactions);
+      // ✅ FIXED: Using Environment Variable
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions`);
+      
       if (!response.ok) {
         throw new Error('Failed to fetch transactions');
       }
@@ -65,8 +66,8 @@ const response = await fetch(${process.env.REACT_APP_API_URL}/transactions);
     }
 
     try {
-      // Call backend reset endpoint (correct URL)
-      const response = await fetch('http://127.0.0.1:8000/reset', {
+      // ✅ FIXED: Using Environment Variable
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/reset`, {
         method: 'DELETE'
       });
 
@@ -83,7 +84,7 @@ const response = await fetch(${process.env.REACT_APP_API_URL}/transactions);
         alert('❌ Failed to reset: ' + (error.detail || 'Unknown error'));
       }
     } catch (err) {
-      alert('❌ Error: Could not connect to backend! Make sure backend is running on port 8000.');
+      alert('❌ Error: Could not connect to backend!');
       console.error(err);
     }
   };
@@ -94,7 +95,8 @@ const response = await fetch(${process.env.REACT_APP_API_URL}/transactions);
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/transactions/${transactionId}`, {
+      // ✅ FIXED: Using Environment Variable
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions/${transactionId}`, {
         method: 'DELETE'
       });
 
@@ -113,7 +115,8 @@ const response = await fetch(${process.env.REACT_APP_API_URL}/transactions);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:8000/transactions', {
+      // ✅ FIXED: Using Environment Variable
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
