@@ -1,0 +1,48 @@
+name: Keep Backend Alive
+
+on:
+  schedule:
+    # Every 10 minutes
+    - cron: '*/10 * * * *'
+  
+  workflow_dispatch:
+
+jobs:
+  ping-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout (optional, for logging)
+        uses: actions/checkout@v4
+      
+      - name: Ping Health Endpoint
+        run: |
+          echo "🔄 Pinging backend at $(date)"
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://expenses-backend-52sa.onrender.com/health)
+          
+          if [ $RESPONSE -eq 200 ]; then
+            echo "✅ Health endpoint: SUCCESS (HTTP $RESPONSE)"
+          else
+            echo "❌ Health endpoint: FAILED (HTTP $RESPONSE)"
+            exit 1
+          fi
+      
+      - name: Ping Root Endpoint
+        run: |
+          echo "🔄 Pinging root endpoint"
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://expenses-backend-52sa.onrender.com/)
+          
+          if [ $RESPONSE -eq 200 ]; then
+            echo "✅ Root endpoint: SUCCESS (HTTP $RESPONSE)"
+          else
+            echo "❌ Root endpoint: FAILED (HTTP $RESPONSE)"
+            exit 1
+          fi
+      
+      - name: Summary
+        if: always()
+        run: |
+          echo "📊 Keep-alive job completed at $(date)"
+          echo "Backend should be awake now! 🚀"
