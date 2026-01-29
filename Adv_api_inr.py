@@ -980,7 +980,22 @@ async def startup_event():
 
 if __name__ == "__main__":
     import uvicorn
-    print("\n🌐 Local Development Server")
-    print("📚 Docs: http://127.0.0.1:8000/docs")
+    import os
+    
+    port = int(os.getenv("PORT", 8000))
+    is_production = os.getenv("RENDER") is not None
+    
+    if is_production:
+        print(f"\n🌐 Production Server on port {port}")
+    else:
+        print(f"\n🌐 Local Development Server on port {port}")
+        print("📚 Docs: http://127.0.0.1:8000/docs")
+    
     print("=" * 80)
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=port, 
+        reload=not is_production
+    )
