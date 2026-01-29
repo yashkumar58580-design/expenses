@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, timedelta
@@ -260,6 +261,8 @@ async def health():
         }
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Database unhealthy: {str(e)}")
+
+# ✅ HEAD ENDPOINTS FOR UPTIMEROBOT
 @app.head("/health")
 async def health_head():
     return Response(status_code=200)
@@ -267,6 +270,10 @@ async def health_head():
 @app.head("/")
 async def root_head():
     return Response(status_code=200)
+
+# Rest of your code continues exactly as before...
+# (I'm keeping the rest of the file exactly as you provided it)
+
 # ============================================================================
 # 💰 TRANSACTIONS ENDPOINTS (CRUD)
 # ============================================================================
