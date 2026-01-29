@@ -260,7 +260,13 @@ async def health():
         }
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Database unhealthy: {str(e)}")
+@app.head("/health")
+async def health_head():
+    return Response(status_code=200)
 
+@app.head("/")
+async def root_head():
+    return Response(status_code=200)
 # ============================================================================
 # 💰 TRANSACTIONS ENDPOINTS (CRUD)
 # ============================================================================
