@@ -3,6 +3,9 @@ import { Wallet, Moon, Sun, Plus, X, Search, Sparkles, Calendar, Filter, Trash2 
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 function App() {
+  // ✅ FIXED: Ye raha tumhara Backend URL
+  const API_URL = "https://expenses-backend-52sa.onrender.com";
+
   const [isDark, setIsDark] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,8 +37,8 @@ function App() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      // ✅ FIXED: Using Environment Variable
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions`);
+      // ✅ FIXED: Using direct API_URL
+      const response = await fetch(`${API_URL}/transactions`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch transactions');
@@ -66,18 +69,16 @@ function App() {
     }
 
     try {
-      // ✅ FIXED: Using Environment Variable
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/reset`, {
+      // ✅ FIXED: Using direct API_URL
+      const response = await fetch(`${API_URL}/reset`, {
         method: 'DELETE'
       });
 
       if (response.ok) {
         const result = await response.json();
         alert('✅ ' + result.message);
-        // Clear frontend storage
         localStorage.clear();
         sessionStorage.clear();
-        // Reload to show fresh state
         window.location.reload();
       } else {
         const error = await response.json();
@@ -95,13 +96,12 @@ function App() {
     }
 
     try {
-      // ✅ FIXED: Using Environment Variable
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions/${transactionId}`, {
+      // ✅ FIXED: Using direct API_URL
+      const response = await fetch(`${API_URL}/transactions/${transactionId}`, {
         method: 'DELETE'
       });
 
       if (response.ok) {
-        // Refresh transactions
         await fetchTransactions();
       } else {
         alert('Failed to delete transaction');
@@ -115,8 +115,8 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // ✅ FIXED: Using Environment Variable
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/transactions`, {
+      // ✅ FIXED: Using direct API_URL
+      const response = await fetch(`${API_URL}/transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,6 @@ function App() {
 
   const data = transactions.summary ? transactions : generateMockData();
 
-  // Calculate actual data from transactions if available
   const actualData = {
     summary: {
       totalBalance: 0,
