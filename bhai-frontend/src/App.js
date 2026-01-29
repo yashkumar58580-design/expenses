@@ -34,7 +34,8 @@ function App() {
   const fetchTransactions = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://127.0.0.1:8000/transactions');
+      const response = await // Dhyan se dekhna, ye ` (backticks) hain, ' (single quotes) nahi.
+const response = await fetch(${process.env.REACT_APP_API_URL}/transactions);
       if (!response.ok) {
         throw new Error('Failed to fetch transactions');
       }
