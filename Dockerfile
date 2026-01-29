@@ -1,16 +1,14 @@
-FROM python:3.9
+# Python aur Node dono ka combo
+FROM nikolaik/python-nodejs:python3.9-nodejs18
 
 WORKDIR /app
-
-# Pehle requirements install karte hain
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Phir baaki saara code copy karte hain
 COPY . .
 
-# Port expose karna zaroori hai
-EXPOSE 8000
+# Backend dependencies
+RUN pip install -r requirements.txt
+
+# Frontend build (Agar React hai)
+RUN npm install && npm run build
 
 # Server start karne ki command
-CMD ["uvicorn", "Adv_api_inr:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "api.index:app", "--host", "0.0.0.0", "--port", "80"]
